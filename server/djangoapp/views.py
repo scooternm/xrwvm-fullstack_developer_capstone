@@ -23,6 +23,7 @@ def login_user(request):
         data = {"userName": username, "status": "Authenticated"}
     return JsonResponse(data)
 
+
 def logout_request(request):
     data = {"userName": ""}
     return JsonResponse(data)
@@ -41,15 +42,17 @@ def registration(request):
         User.objects.get(username=username)
         username_exist = True
     except Exception as e:
-        logger.debug(f"{username} is new user")
+        logger.debug(f"{username} is new user:{str(e)}")
     if not username_exist:
-        user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, password=password, email=email)
+        user = User.objects.create_user(username=username, first_name=first_name,
+                                        last_name=last_name, password=password, email=email)
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
         return JsonResponse(data)
     else:
         data = {"userName": username, "error": "Already Registered"}
         return JsonResponse(data)
+
 
 def get_cars(request):
     count = CarMake.objects.filter().count()
@@ -103,6 +106,7 @@ def add_review(request):
             return JsonResponse({"status": 200})
         except Exception as e:
             logger.error(f"Error adding review: {str(e)}")
-            return JsonResponse({"status": 500, "message": "Internal Server Error"})
+            return JsonResponse({"status": 500,
+                                 "message": "Internal Server Error"})
     else:
         return JsonResponse({"status": 401, "message": "Unauthorized"})
