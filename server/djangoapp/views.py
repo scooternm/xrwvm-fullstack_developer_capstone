@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, render, redirect
-from datetime import datetime
+
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
 import logging
@@ -27,6 +26,7 @@ def login_user(request):
         data = {"userName": username, "status": "Authenticated"}
     return JsonResponse(data)
 
+
 def logout_request(request):
     data = {"userName": ""}
     return JsonResponse(data)
@@ -37,7 +37,7 @@ def registration(request):
 
     data = json.loads(request.body)
     username = data['userName']
-    password = data['password'] 
+    password = data['password']
     first_name = data['firstName']
     last_name = data['lastName']
     email = data['email']
@@ -46,10 +46,10 @@ def registration(request):
         User.objects.get(username=username)
         username_exist = True
     except Exception as e:
-        logger.debug("{} is new user: {e}" .format(username))
+        logger.debug("{} is new user" .format(username))
     if not username_exist:
-        user = User.objects.create_user(username=username, first_name=first_name,
-                                        last_name=last_name, password=password, email=email)
+        user = User.objects.create_user(username=username, first_name=first_name,last_name=last_name,
+                                        password=password, email=email)
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
         return JsonResponse(data)
@@ -72,34 +72,34 @@ def get_cars(request):
 
 
 def get_dealerships(request, state="All"):
-    if(state == "All"):
+    if (state == "All"):
         endpoint = "/fetchDealers"
     else:
         endpoint = "/fetchDealers/"+state
     dealerships = get_request(endpoint)
-    return JsonResponse({"status": 200,"dealers": dealerships})
+    return JsonResponse({"status": 200, "dealers": dealerships})
 
 
 def get_dealer_reviews(request,dealer_id):
-    if(dealer_id):
+    if (dealer_id):
         endpoint = "/fetchReviews/dealer/"+str(dealer_id)
         reviews = get_request(endpoint)
         for review_detail in reviews:
             response = analyze_review_sentiments(review_detail['review'])
             print(response)
             review_detail['sentiment'] = response['sentiment']
-        return JsonResponse({"status": 200,"reviews": reviews})
+        return JsonResponse({"status": 200, "reviews": reviews})
     else:
-        return JsonResponse({"status": 400,"message": "Bad Request"})
+        return JsonResponse({"status": 400, "message": "Bad Request"})
 
 
 def get_dealer_details(request, dealer_id):
     if(dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
         dealership = get_request(endpoint)
-        return JsonResponse({"status": 200,"dealer": dealership})
+        return JsonResponse({"status": 200, "dealer": dealership})
     else:
-        return JsonResponse({"status": 400,"message": "Bad Request"})
+        return JsonResponse({"status": 400, "message": "Bad Request"})
 
 
 def add_review(request):
