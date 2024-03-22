@@ -28,9 +28,9 @@ SECRET_KEY =\
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', # noqa: E501
+ALLOWED_HOSTS = ['localhost',  # noqa: E501
                  'https://mccray382-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai']
-CSRF_TRUSTED_ORIGINS = [ # noqa: E501
+CSRF_TRUSTED_ORIGINS = [  # noqa: E501
     'https://mccray382-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai'
 ]
 
@@ -96,7 +96,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': # noqa: E501
+        'NAME':  # noqa: E501
         'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
