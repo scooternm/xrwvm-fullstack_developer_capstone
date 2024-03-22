@@ -10,6 +10,7 @@ from .restapis import get_request, analyze_review_sentiments, post_review
 
 logger = logging.getLogger(__name__)
 
+
 @csrf_exempt
 def login_user(request):
     data = json.loads(request.body)
@@ -25,6 +26,7 @@ def login_user(request):
 def logout_request(request):
     data = {"userName": ""}
     return JsonResponse(data)
+
 
 @csrf_exempt
 def registration(request):
@@ -57,8 +59,10 @@ def get_cars(request):
     car_models = CarModel.objects.select_related('car_make')
     cars = []
     for car_model in car_models:
-        cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
+        cars.append({"CarModel": car_model.name,
+                     "CarMake": car_model.car_make.name})
     return JsonResponse({"CarModels": cars})
+
 
 def get_dealerships(request, state="All"):
     if state == "All":
@@ -67,6 +71,7 @@ def get_dealerships(request, state="All"):
         endpoint = "/fetchDealers/" + state
     dealerships = get_request(endpoint)
     return JsonResponse({"status": 200, "dealers": dealerships})
+
 
 def get_dealer_reviews(request, dealer_id):
     if dealer_id:
@@ -80,6 +85,7 @@ def get_dealer_reviews(request, dealer_id):
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
 
+
 def get_dealer_details(request, dealer_id):
     if dealer_id:
         endpoint = "/fetchDealer/" + str(dealer_id)
@@ -87,6 +93,7 @@ def get_dealer_details(request, dealer_id):
         return JsonResponse({"status": 200, "dealer": dealership})
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
+
 
 def add_review(request):
     if not request.user.is_anonymous:
@@ -99,4 +106,3 @@ def add_review(request):
             return JsonResponse({"status": 500, "message": "Internal Server Error"})
     else:
         return JsonResponse({"status": 401, "message": "Unauthorized"})
-
