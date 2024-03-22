@@ -98,7 +98,7 @@ def get_dealer_details(request, dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
         dealership = get_request(endpoint)
     return JsonResponse({"status": 200,"dealer": dealership})
-else:
+    else:
     return JsonResponse({"status": 400,"message": "Bad Request"})
 
 
