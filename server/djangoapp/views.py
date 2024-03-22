@@ -1,9 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import logout
-from django.contrib import messages
 from datetime import datetime
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
@@ -34,9 +31,9 @@ def logout_request(request):
     data = {"userName": ""}
     return JsonResponse(data)
 
+
 @csrf_exempt
 def registration(request):
-    context = {}
 
     data = json.loads(request.body)
     username = data['userName']
@@ -60,6 +57,7 @@ def registration(request):
         data = {"userName": username, "error": "Already Registered"}
         return JsonResponse(data)
 
+
 def get_cars(request):
     count = CarMake.objects.filter().count()
     print(count)
@@ -71,6 +69,7 @@ def get_cars(request):
         cars.append({"CarModel": car_model.name,
                      "CarMake": car_model.car_make.name})
     return JsonResponse({"CarModels": cars})
+
 
 def get_dealerships(request, state="All"):
     if(state == "All"):
