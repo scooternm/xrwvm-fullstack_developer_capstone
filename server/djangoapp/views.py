@@ -46,8 +46,8 @@ def registration(request):
     except Exception as e:
         logger.debug("{} is new user" .format(username))
     if not username_exist:
-        user = User.objects.create_user(username=username, first_name=first_name,last_name=last_name,
-                                        password=password, email=email)
+        user = User.objects.create_user(username=username, first_name=first_name, last_name=
+                                        last_name, password=password, email=email)
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
         return JsonResponse(data)
@@ -92,7 +92,7 @@ def get_dealer_reviews(request, dealer_id):
 
 
 def get_dealer_details(request, dealer_id):
-    if(dealer_id):
+    if (dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
         dealership = get_request(endpoint)
         return JsonResponse({"status": 200, "dealer": dealership})
@@ -104,9 +104,9 @@ def add_review(request):
     if (request.user.is_anonymous == False):
         data = json.loads(request.body)
         try:
-            response = post_review(data)
+            response= post_review(data)
             return JsonResponse({"status": 200})
-        except:
+        except Exception:
             return JsonResponse({"status": 401, "message": "Error in posting review"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
